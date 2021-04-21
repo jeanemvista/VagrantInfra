@@ -2,6 +2,8 @@
 BOX_BASE = "debian/stretch64"
 BOX_RAM_MB = "2048"
 BOX_CPU = "2"
+# Number of node, NB_NODE : 0 < X < 100
+NB_NODE = 2
 
 Vagrant.configure("2") do |config|
 
@@ -18,9 +20,8 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  # X Node with 0 < X < 100
-  nbNode = 2
-  (1..nbNode).each do |i|
+  # Nodes
+  (1..NB_NODE).each do |i|
     config.vm.define "node#{i}" do |node|
       node.vm.box = BOX_BASE
       node.vm.hostname = "node#{i}"
@@ -33,4 +34,5 @@ Vagrant.configure("2") do |config|
       end
     end
   end
+  
 end
