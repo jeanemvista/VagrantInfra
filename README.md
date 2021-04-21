@@ -7,6 +7,13 @@ Vagrant configuration file to up dev/test infrastructure : start 3 VMs : 1 maste
 
  * [Vagran by HashiCorp](https://www.vagrantup.com/)
 
+## Init script
+
+### Common (init.sh)
+
+* add new entry in /etc/hosts
+
+
 ## Launch
 
 Clone repo and :
