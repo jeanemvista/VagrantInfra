@@ -1,10 +1,15 @@
 # Vagrant
 
-Vagrant config script to up dev/test infrastructure. Start 3 VM : 1 master and X nodes.
+Vagrant configuration file to up dev/test infrastructure : start 3 VMs : 1 master and X nodes.
 
-Download and install [Vagran by HashiCorp](https://www.vagrantup.com/)
 
-Launch :
+## Download and install
+
+ * [Vagran by HashiCorp](https://www.vagrantup.com/)
+
+## Launch
+
+Clone repo and :
 
 ```
 # vagrant up
