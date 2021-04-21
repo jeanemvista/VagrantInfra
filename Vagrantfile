@@ -4,6 +4,8 @@ BOX_RAM_MB = "2048"
 BOX_CPU = "2"
 # Number of node, NB_NODE : 0 < X < 100
 NB_NODE = 2
+# Init shell script
+INIT_SH = "init.sh"
 
 Vagrant.configure("2") do |config|
 
@@ -18,6 +20,7 @@ Vagrant.configure("2") do |config|
       m.customize ["modifyvm", :id, "--name", master]
       m.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     end
+    master.vm.provision "shell", path: INIT_SH
   end
 
   # Nodes
@@ -32,7 +35,8 @@ Vagrant.configure("2") do |config|
         n.customize ["modifyvm", :id, "--name", "node#{i}"]
         n.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       end
+      node.vm.provision "shell", path: INIT_SH
     end
   end
-  
+
 end
