@@ -11,4 +11,9 @@ if [ "$in_hosts" == "0" ];then
   echo "$IP $HOSTNAME" >> /etc/hosts
 fi
 
+# Update distrib
+apt update -qq -y
+apt upgrade -qq -y
+
+
 echo "End init - "$HOSTNAME
