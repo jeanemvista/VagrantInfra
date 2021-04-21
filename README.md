@@ -14,3 +14,10 @@ Clone repo and :
 ```
 # vagrant up
 ```
+
+## stop
+
+
+```
+# vagrant halt
+```
