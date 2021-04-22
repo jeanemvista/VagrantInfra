@@ -12,8 +12,7 @@ if [ "$in_hosts" == "0" ];then
 fi
 
 # Update distrib
-apt update -qq -y
-apt upgrade -qq -y
-
+#apt update -qq -y
+#apt upgrade -qq -y
 
 echo "End init - "$HOSTNAME
