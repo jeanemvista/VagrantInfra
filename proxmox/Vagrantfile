@@ -9,7 +9,7 @@ NB_NODE = 1
 # Init shell script
 INIT_SH = "init.sh"
 # Number of datastore on master
-NB_MASTER_DATASTORE = 2
+NB_MASTER_DATASTORE = 3
 DATASTORE_SIZE = 10 # Giga
 
 Vagrant.configure("2") do |config|
@@ -27,7 +27,7 @@ Vagrant.configure("2") do |config|
       m.customize ["modifyvm", :id, "--name", master]
       m.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       (1..NB_MASTER_DATASTORE).each do |i|
-        unless File.exist?("./proxmox_datastore#{i}.vdi")
+        unless File.exist?("../proxmox_datastore#{i}.vdi")
           m.customize ['createhd', '--filename', "../proxmox_datastore#{i}.vdi",'--variant', 'Fixed', '--size', DATASTORE_SIZE * 1024]
         end
         m.customize ['storageattach', :id,  '--storagectl', 'SATA Controller', '--port', "#{i}", '--device', 0, '--type', 'hdd', '--medium', "../proxmox_datastore#{i}.vdi"]
