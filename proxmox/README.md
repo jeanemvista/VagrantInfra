@@ -4,6 +4,8 @@ Configuration Vagrant pour tester Proxmox :
 
 ## Configuration
 
+Dans Vagrantfile, il est possible de configurer les machines :
+
 ```
 # global configuration
 BOX_BASE = "debian/buster64"
