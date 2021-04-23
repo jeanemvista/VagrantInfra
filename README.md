@@ -1,30 +1,21 @@
 # Vagrant
 
-Vagrant configuration file to up dev/test infrastructure : start 3 VMs : 1 master and X nodes.
-
-
 ## Download and install
 
  * [Vagran by HashiCorp](https://www.vagrantup.com/)
 
-## Init script
+## Minimal
 
-### Common (init.sh)
+Configuration minimal pour lancer des VMs debian/buster64 avec :
+* Un master
+* X nodes
 
-* add new entry in /etc/hosts
+[Plus...](./minimal/)
 
+## Proxmox
 
-## Launch
+Configuration permettant de lancer Proxmox sur une/des VMs debian/buster64 :
+* Un master avec un datastore de N disques permettant de tester ZFS et le raid
+* X nodes pour tester la réplication.
 
-Clone repo and :
-
-```
-# vagrant up
-```
-
-## stop
-
-
-```
-# vagrant halt
-```
+[Plus...](./proxmox/)

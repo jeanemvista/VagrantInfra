@@ -4,6 +4,7 @@ BOX_RAM_MB = "2048"
 BOX_CPU = "2"
 # Number of node, NB_NODE : 0 < X < 100
 NB_NODE = 2
+NB_MASTER_DATASTORE = 2
 # Init shell script
 INIT_SH = "init.sh"
 
@@ -19,6 +20,13 @@ Vagrant.configure("2") do |config|
       m.customize ["modifyvm", :id, "--cpus", BOX_CPU]
       m.customize ["modifyvm", :id, "--name", master]
       m.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      # Add Datasore
+      (1..NB_MASTER_DATASTORE).each do |i|
+        unless File.exist?("./datastore#{i}.vdi")
+          m.customize ['createhd', '--filename', "../datastore#{i}.vdi",'--variant', 'Fixed', '--size', 10 * 1024]
+        end
+        m.customize ['storageattach', :id,  '--storagectl', 'SATA Controller', '--port', "#{i}", '--device', 0, '--type', 'hdd', '--medium', "../datastore#{i}.vdi"]
+      end
     end
     master.vm.provision "shell", path: INIT_SH
   end

@@ -1,0 +1,59 @@
+# global configuration
+BOX_BASE = "debian/buster64"
+MASTER_BOX_CPU = "4"
+MASTER_BOX_RAM_MB = "4096"
+NB_MASTER_DATASTORE = 3 # Number of disque on master
+DATASTORE_SIZE = 10 # Giga
+# Number of node, NB_NODE : 0 < X < 100
+NB_NODE = 1
+NODE_RAM_MB = "2048"
+NODE_CPU = "2"
+
+# Init shell script
+INIT_SH = "init.sh"
+
+Vagrant.configure("2") do |config|
+
+  # Master
+  config.vm.define "master" do |master|
+    master.vm.box = BOX_BASE
+    master.vm.hostname = "master"
+    master.vm.network :private_network, ip: "192.168.0.10"
+    master.vm.network "public_network", use_dhcp_assigned_default_route: true
+    master.vm.network "forwarded_port", guest: 8006, host: 8000
+    master.vm.provider :virtualbox do |m|
+      m.customize ["modifyvm", :id, "--memory", MASTER_BOX_RAM_MB]
+      m.customize ["modifyvm", :id, "--cpus", MASTER_BOX_CPU]
+      m.customize ["modifyvm", :id, "--name", master]
+      m.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      (1..NB_MASTER_DATASTORE).each do |i|
+        unless File.exist?("../proxmox_datastore#{i}.vdi")
+          m.customize ['createhd', '--filename', "../proxmox_datastore#{i}.vdi",'--variant', 'Fixed', '--size', DATASTORE_SIZE * 1024]
+        end
+        m.customize ['storageattach', :id,  '--storagectl', 'SATA Controller', '--port', "#{i}", '--device', 0, '--type', 'hdd', '--medium', "../proxmox_datastore#{i}.vdi"]
+      end
+    end
+    master.vm.provision "shell", path: INIT_SH
+    master.vm.provision "shell", path: "init_proxmox.sh"
+  end
+
+  # Nodes
+  (1..NB_NODE).each do |i|
+    config.vm.define "node#{i}" do |node|
+      node.vm.box = BOX_BASE
+      node.vm.hostname = "node#{i}"
+      node.vm.network :private_network, ip: "192.168.0.1#{i}"
+      node.vm.network "forwarded_port", guest: 8006, host: "800#{i}"
+      node.vm.provider :virtualbox do |n|
+        n.customize ["modifyvm", :id, "--memory", NODE_RAM_MB]
+        n.customize ["modifyvm", :id, "--cpus", NODE_CPU]
+        n.customize ["modifyvm", :id, "--name", "node#{i}"]
+        n.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+
+      end
+      node.vm.provision "shell", path: INIT_SH
+      node.vm.provision "shell", path: "init_proxmox.sh"
+    end
+  end
+
+end
