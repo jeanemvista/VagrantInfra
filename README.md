@@ -10,12 +10,12 @@ Configuration minimal pour lancer des VMs debian/buster64 avec :
 * Un master
 * X nodes
 
-* [Readme](./minimal/)
+[Plus...](./minimal/)
 
 ## Proxmox
 
 Configuration permettant de lancer Proxmox sur une/des VMs debian/buster64 :
-* Un master
-* X nodes
+* Un master avec un datastore de N disques permettant de tester ZFS et le raid
+* X nodes pour tester la réplication.
 
-* [Readme](./proxmox/)
+[Plus...](./proxmox/)
